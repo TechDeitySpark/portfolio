@@ -1,0 +1,278 @@
+/* GitHub Portfolio Integration Styles */
+
+/* Project Image Enhancements */
+.github-project-image {
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.github-project-image img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.tmp-portfolio:hover .github-project-image img {
+    transform: scale(1.05);
+}
+
+/* Project Overlay for Tech Stack */
+.project-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    display: flex;
+    align-items: flex-end;
+    padding: 20px;
+}
+
+.tmp-portfolio:hover .project-overlay {
+    opacity: 1;
+}
+
+.project-tech-stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.tech-tag {
+    background: rgba(255, 255, 255, 0.9);
+    color: #333;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    backdrop-filter: blur(10px);
+}
+
+/* Project Description */
+.project-description {
+    color: #666;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin: 10px 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Project Stats */
+.project-stats {
+    display: flex;
+    gap: 15px;
+    margin-top: 10px;
+    align-items: center;
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.8rem;
+    color: #888;
+}
+
+.stat-item i {
+    font-size: 0.7rem;
+}
+
+.primary-lang {
+    background: #f0f0f0;
+    padding: 2px 6px;
+    border-radius: 8px;
+    font-weight: 500;
+    color: #555;
+}
+
+/* Button Group for Multiple Actions */
+.btn-group {
+    display: flex;
+    gap: 8px;
+}
+
+.github-btn {
+    background: #333;
+    color: white;
+}
+
+.github-btn:hover {
+    background: #24292e;
+}
+
+/* Featured Project Styling */
+.featured-project {
+    border: 2px solid #007bff;
+    border-radius: 8px;
+    position: relative;
+}
+
+.featured-project::before {
+    content: "Featured";
+    position: absolute;
+    top: -10px;
+    left: 20px;
+    background: #007bff;
+    color: white;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    z-index: 10;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .github-project-image img {
+        height: 200px;
+    }
+    
+    .project-overlay {
+        position: static;
+        opacity: 1;
+        background: none;
+        padding: 0;
+        margin-top: 10px;
+    }
+    
+    .project-tech-stack {
+        justify-content: flex-start;
+    }
+    
+    .btn-group {
+        flex-direction: column;
+        gap: 4px;
+    }
+    
+    .project-stats {
+        justify-content: flex-start;
+        gap: 10px;
+    }
+}
+
+/* Language-specific color coding */
+.tech-tag[data-lang="JavaScript"] { background: #f7df1e; color: #000; }
+.tech-tag[data-lang="TypeScript"] { background: #3178c6; color: #fff; }
+.tech-tag[data-lang="Python"] { background: #3776ab; color: #fff; }
+.tech-tag[data-lang="Java"] { background: #ed8b00; color: #fff; }
+.tech-tag[data-lang="React"] { background: #61dafb; color: #000; }
+.tech-tag[data-lang="Vue"] { background: #4fc08d; color: #fff; }
+.tech-tag[data-lang="Angular"] { background: #dd0031; color: #fff; }
+.tech-tag[data-lang="Node"] { background: #339933; color: #fff; }
+.tech-tag[data-lang="PHP"] { background: #777bb4; color: #fff; }
+.tech-tag[data-lang="C#"] { background: #239120; color: #fff; }
+.tech-tag[data-lang="Go"] { background: #00add8; color: #fff; }
+.tech-tag[data-lang="Rust"] { background: #000; color: #fff; }
+
+/* Loading State */
+.portfolio-loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    color: #666;
+}
+
+.portfolio-loading::before {
+    content: "";
+    width: 40px;
+    height: 40px;
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid #333;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-right: 10px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Error State */
+.portfolio-error {
+    text-align: center;
+    color: #dc3545;
+    padding: 20px;
+    border: 1px dashed #dc3545;
+    border-radius: 8px;
+    margin: 20px 0;
+}
+
+/* GitHub API Rate Limit Notice */
+.api-notice {
+    background: #fff3cd;
+    border: 1px solid #ffeaa7;
+    color: #856404;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    font-size: 0.9rem;
+}
+
+/* Project Categories */
+.portfoli-card-para {
+    position: relative;
+}
+
+.portfoli-card-para[data-category="Full Stack"]::before {
+    content: "🚀";
+    margin-right: 5px;
+}
+
+.portfoli-card-para[data-category="Frontend"]::before {
+    content: "🎨";
+    margin-right: 5px;
+}
+
+.portfoli-card-para[data-category="Backend"]::before {
+    content: "⚙️";
+    margin-right: 5px;
+}
+
+.portfoli-card-para[data-category="Mobile"]::before {
+    content: "📱";
+    margin-right: 5px;
+}
+
+.portfoli-card-para[data-category="Data Science"]::before {
+    content: "📊";
+    margin-right: 5px;
+}
+
+.portfoli-card-para[data-category="Machine Learning"]::before {
+    content: "🤖";
+    margin-right: 5px;
+}
+
+/* Improved hover effects */
+.tmp-portfolio {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.tmp-portfolio:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+/* GitHub integration specific improvements */
+.github-portfolio-container .tmp-portfolio {
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.github-portfolio-container .portfolio-card-content-wrap {
+    padding: 20px;
+}
