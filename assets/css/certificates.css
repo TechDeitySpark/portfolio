@@ -272,6 +272,58 @@
     padding-top: 20px;
 }
 
+/* Certificate File Links */
+.certificate-file-list {
+    background: var(--background-color-1);
+    border-radius: 8px;
+    padding: 15px;
+    border: 1px solid var(--color-border);
+}
+
+.file-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.file-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 12px;
+    background: var(--color-card);
+    color: var(--color-body);
+    text-decoration: none;
+    border-radius: 6px;
+    border: 1px solid var(--color-border);
+    font-size: 14px;
+    transition: var(--transition);
+}
+
+.file-link:hover {
+    background: #e74c3c;
+    color: white;
+    border-color: #e74c3c;
+    transform: translateY(-2px);
+}
+
+.file-link i {
+    color: #e74c3c;
+}
+
+.file-link:hover i {
+    color: white;
+}
+
+.certificate-file-list p {
+    margin: 0 0 10px 0;
+    font-weight: var(--p-medium);
+    color: var(--color-heading);
+    text-align: center;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .certificate-image {
@@ -311,6 +363,15 @@
         justify-content: center;
         width: 100%;
     }
+    
+    .file-links {
+        flex-direction: column;
+    }
+    
+    .file-link {
+        justify-content: center;
+        width: 100%;
+    }
 }
 
 @media (max-width: 576px) {
@@ -337,6 +398,15 @@
     
     .certificate-pdf-viewer {
         min-height: 300px;
+    }
+    
+    .certificate-file-list {
+        padding: 10px;
+    }
+    
+    .file-link {
+        padding: 6px 10px;
+        font-size: 12px;
     }
 }
 

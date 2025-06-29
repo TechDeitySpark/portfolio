@@ -1410,24 +1410,19 @@
                     modalTitle.textContent = 'HackerRank - Problem Solving (Intermediate)';
                     modalContent.innerHTML = `
                         <div class="certificate-display">
-                            <!-- Try to load image first -->
-                            <img src="assets/certificates/hackerrank-certificate.svg" 
-                                 alt="HackerRank Problem Solving Certificate" 
-                                 class="certificate-full-image"
-                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                            
-                            <!-- Fallback to PDF if image not found -->
-                            <div class="certificate-pdf-viewer" style="display: none;">
+                            <!-- PDF View - Show by default -->
+                            <div class="certificate-pdf-viewer" style="display: block;">
                                 <embed src="assets/certificates/rest_api_intermediate certificate.pdf" 
                                        type="application/pdf" 
                                        width="100%" 
                                        height="600px"
                                        class="certificate-pdf-embed"
-                                       title="HackerRank Certificate PDF">
-                                <div class="pdf-fallback" style="text-align: center; padding: 20px;">
+                                       title="REST API Certificate PDF"
+                                       onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                                <div class="pdf-fallback" style="display: none; text-align: center; padding: 20px;">
                                     <p><i class="fa-solid fa-file-pdf" style="font-size: 48px; color: #e74c3c; margin-bottom: 15px;"></i></p>
                                     <p><strong>PDF Certificate Available</strong></p>
-                                    <p>REST API Intermediate Certificate (Demo)</p>
+                                    <p>REST API Intermediate Certificate</p>
                                     <a href="assets/certificates/rest_api_intermediate certificate.pdf" 
                                        target="_blank" 
                                        class="btn btn-primary" 
@@ -1437,7 +1432,14 @@
                                 </div>
                             </div>
                             
-                            <!-- Final fallback to iframe -->
+                            <!-- Image View - Hidden by default -->
+                            <div class="certificate-image-viewer" style="display: none;">
+                                <img src="assets/certificates/hackerrank-certificate.svg" 
+                                     alt="HackerRank Problem Solving Certificate" 
+                                     class="certificate-full-image">
+                            </div>
+                            
+                            <!-- Online View - Hidden by default -->
                             <div class="certificate-iframe-fallback" style="display: none;">
                                 <iframe src="https://www.hackerrank.com/certificates/iframe/9e91e58625b8" 
                                         width="100%" 
@@ -1449,15 +1451,32 @@
                             
                             <div class="certificate-options" style="margin-top: 20px; text-align: center;">
                                 <div class="certificate-format-options">
-                                    <button onclick="showCertificateFormat('image', 'hackerrank')" class="format-btn active" id="btn-image">
-                                        <i class="fa-solid fa-image"></i> Image
-                                    </button>
-                                    <button onclick="showCertificateFormat('pdf', 'hackerrank')" class="format-btn" id="btn-pdf">
+                                    <button onclick="showCertificateFormat('pdf', 'hackerrank')" class="format-btn active" id="btn-pdf">
                                         <i class="fa-solid fa-file-pdf"></i> PDF
+                                    </button>
+                                    <button onclick="showCertificateFormat('image', 'hackerrank')" class="format-btn" id="btn-image">
+                                        <i class="fa-solid fa-image"></i> Image
                                     </button>
                                     <button onclick="showCertificateFormat('online', 'hackerrank')" class="format-btn" id="btn-online">
                                         <i class="fa-solid fa-globe"></i> Online
                                     </button>
+                                </div>
+                                <div class="certificate-file-list" style="margin-top: 15px;">
+                                    <p><strong>Available Certificate Files:</strong></p>
+                                    <div class="file-links">
+                                        <a href="assets/certificates/rest_api_intermediate certificate.pdf" target="_blank" class="file-link">
+                                            <i class="fa-solid fa-file-pdf"></i> REST API Intermediate
+                                        </a>
+                                        <a href="assets/certificates/software_engineer certificate.pdf" target="_blank" class="file-link">
+                                            <i class="fa-solid fa-file-pdf"></i> Software Engineer
+                                        </a>
+                                        <a href="assets/certificates/sql_basic certificate.pdf" target="_blank" class="file-link">
+                                            <i class="fa-solid fa-file-pdf"></i> SQL Basic
+                                        </a>
+                                        <a href="assets/certificates/sql_intermediate certificate.pdf" target="_blank" class="file-link">
+                                            <i class="fa-solid fa-file-pdf"></i> SQL Intermediate
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -1475,7 +1494,7 @@
         }
         
         function showCertificateFormat(format, certificateType) {
-            const imageDiv = document.querySelector('.certificate-full-image').parentElement;
+            const imageDiv = document.querySelector('.certificate-image-viewer');
             const pdfDiv = document.querySelector('.certificate-pdf-viewer');
             const iframeDiv = document.querySelector('.certificate-iframe-fallback');
             
