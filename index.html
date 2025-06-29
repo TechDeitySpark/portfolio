@@ -16,6 +16,9 @@
     <link rel="stylesheet" href="assets/css/vendor/bootstrap.min.css">
     <!-- custom css -->
     <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/contact-secure.css">
+    <!-- reCAPTCHA -->
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
 
 <body class="spybody index-ten primary-yellow" data-spy="scroll" data-bs-target=".navbar-example2" data-offset="70">
@@ -1027,41 +1030,59 @@
 
                                                 <div class="contact-inner">
                                                     <div class="contact-form">
-                                                        <form id="contact-form" action="#">
+                                                        <form id="contact-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
                                                             <div class="contact-form-wrapper row">
+                                                                <!-- Honeypot field (hidden from users, catches bots) -->
+                                                                <input type="text" name="_gotcha" style="display:none" />
+                                                                
                                                                 <div class="col-lg-6">
                                                                     <div class="form-group">
-                                                                        <input class="input-field" name="contact-name" placeholder="Your Name" id="contact-name" type="text" required="">
+                                                                        <input class="input-field" name="name" placeholder="Your Name" id="contact-name" type="text" required="" maxlength="100">
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-lg-6">
                                                                     <div class="form-group">
-                                                                        <input class="input-field" name="contact-email" placeholder="Your Email" type="text">
+                                                                        <input class="input-field" name="email" placeholder="Your Email" type="email" required="" maxlength="100">
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-lg-6">
                                                                     <div class="form-group">
-                                                                        <input class="input-field" name="contact-phone" placeholder="Phone Number" type="number" required="">
+                                                                        <input class="input-field" name="phone" placeholder="Phone Number" type="tel" maxlength="20">
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-lg-6">
                                                                     <div class="form-group">
-                                                                        <input class="input-field" type="text" id="subject" placeholder="Subject" name="Subject">
+                                                                        <input class="input-field" type="text" id="subject" placeholder="Subject" name="subject" required="" maxlength="200">
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-lg-12">
                                                                     <div class="form-group">
-                                                                        <textarea class="input-field" placeholder="Your Message" name="contact-message" id="contact-message"></textarea>
+                                                                        <textarea class="input-field" placeholder="Your Message" name="message" id="contact-message" required="" maxlength="1000" rows="5"></textarea>
                                                                     </div>
                                                                 </div>
+                                                                
+                                                                <!-- reCAPTCHA -->
+                                                                <div class="col-lg-12 mb-3">
+                                                                    <div class="g-recaptcha" data-sitekey="YOUR_RECAPTCHA_SITE_KEY"></div>
+                                                                </div>
+                                                                
                                                                 <div class="col-lg-12">
-                                                                    <button type="submit" class="tmp-btn hover-icon-reverse radius-round w-100">
+                                                                    <button type="submit" class="tmp-btn hover-icon-reverse radius-round w-100" id="submit-btn">
                                                                         <span class="icon-reverse-wrapper">
-                                                                            <span class="btn-text">Appointment Now</span>
+                                                                            <span class="btn-text">Send Message</span>
                                                                         <span class="btn-icon"><i class="fa-sharp fa-regular fa-arrow-right"></i></span>
                                                                         <span class="btn-icon"><i class="fa-sharp fa-regular fa-arrow-right"></i></span>
                                                                         </span>
                                                                     </button>
+                                                                </div>
+                                                                
+                                                                <!-- Success/Error Messages -->
+                                                                <div class="col-lg-12">
+                                                                    <div id="form-messages" class="mt-3"></div>
+                                                                    <div class="security-badge">
+                                                                        <i class="fa fa-shield-alt"></i>
+                                                                        <span>Protected by anti-spam & security measures</span>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </form>
@@ -1225,7 +1246,7 @@
     <script src="assets/js/vendor/waw.js"></script>
     <script src="assets/js/plugins/isotop.js"></script>
     <script src="assets/js/plugins/animation.js"></script>
-    <script src="assets/js/plugins/contact.form.js"></script>
+    <script src="assets/js/plugins/contact-secure.js"></script>
     <script src="assets/js/vendor/backtop.js"></script>
     <script src="assets/js/vendor/particle.js"></script>
     <script src="assets/js/plugins/text-type.js"></script>

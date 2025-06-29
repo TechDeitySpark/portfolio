@@ -1,0 +1,95 @@
+/* Secure Contact Form Styles */
+
+/* Form Messages */
+#form-messages {
+    margin-top: 1rem;
+}
+
+#form-messages .alert {
+    border-radius: 8px;
+    border: none;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+#form-messages .alert-success {
+    background: linear-gradient(135deg, #28a745, #20c997);
+    color: white;
+    border-left: 4px solid #155724;
+}
+
+#form-messages .alert-danger {
+    background: linear-gradient(135deg, #dc3545, #fd7e14);
+    color: white;
+    border-left: 4px solid #721c24;
+}
+
+/* Form Security Indicators */
+.input-field:valid {
+    border-left: 3px solid #28a745;
+}
+
+.input-field:invalid:not(:placeholder-shown) {
+    border-left: 3px solid #dc3545;
+}
+
+/* Button States */
+.tmp-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+/* Honeypot field (must remain hidden) */
+input[name="_gotcha"] {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    position: absolute !important;
+    left: -9999px !important;
+}
+
+/* reCAPTCHA styling */
+.g-recaptcha {
+    display: flex;
+    justify-content: flex-start;
+    margin: 1rem 0;
+}
+
+/* Security badge */
+.security-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    color: #6c757d;
+    margin-top: 0.5rem;
+}
+
+.security-badge i {
+    color: #28a745;
+}
+
+/* Rate limit warning */
+.rate-limit-warning {
+    background: #fff3cd;
+    border: 1px solid #ffeaa7;
+    color: #856404;
+    padding: 0.75rem;
+    border-radius: 0.375rem;
+    margin-bottom: 1rem;
+    display: none;
+}
+
+/* Form loading state */
+.form-loading .input-field {
+    pointer-events: none;
+    opacity: 0.7;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    .g-recaptcha {
+        transform: scale(0.85);
+        transform-origin: 0 0;
+    }
+}
