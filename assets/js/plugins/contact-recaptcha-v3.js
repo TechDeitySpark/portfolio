@@ -17,8 +17,8 @@
     const MAX_SUBMISSIONS = 3;
     const TIME_WINDOW = 5 * 60 * 1000; // 5 minutes
 
-    // Replace with your actual reCAPTCHA v3 site key
-    const RECAPTCHA_SITE_KEY = 'YOUR_SITE_KEY_HERE';
+    // Your reCAPTCHA v3 site key
+    const RECAPTCHA_SITE_KEY = '6LcEn3ErAAAAAF7mOHQCmSVwDsEAuy8OiOSyyPYz';
 
     // Input sanitization - removes dangerous content
     function sanitizeInput(input) {
