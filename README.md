@@ -33,13 +33,13 @@ A modern, responsive portfolio website showcasing my work as a Full Stack Softwa
 
 ## 🔗 Live Demo
 
-[Portfolio Website](https://your-username.github.io/portfolio)
+[Portfolio Website](https://techdeityspark.github.io/portfolio)
 
 ## 📞 Contact
 
 - **LinkedIn**: [Tamanna Rahman](https://www.linkedin.com/in/tamanna-rahman-diu/)
 - **GitHub**: [TechDeitySpark](https://github.com/TechDeitySpark)
-- **Email**: [Your Email]
+- **Email**: tamanna.rahman@example.com
 
 ## 📄 License
 
