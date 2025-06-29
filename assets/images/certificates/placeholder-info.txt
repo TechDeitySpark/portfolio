@@ -1,0 +1,16 @@
+<!-- Placeholder certificate image - replace with actual certificates -->
+<!-- This is a text file placeholder. You should replace these with actual certificate images (JPG/PNG) -->
+
+Certificate Image Placeholders:
+- cert-1.jpg: AWS Cloud Practitioner Certificate
+- cert-2.jpg: Oracle Java SE Certification
+- cert-3.jpg: Docker Certified Associate
+- cert-4.jpg: Certified ScrumMaster (CSM)
+- cert-5.jpg: JavaScript Algorithms & Data Structures
+- cert-6.jpg: System Design & Architecture
+
+To add your certificates:
+1. Take high-quality photos or screenshots of your certificates
+2. Save them as JPG files with the names above
+3. Replace these placeholder files
+4. Update the certificate details in index.html to match your actual certificates
