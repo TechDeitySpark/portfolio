@@ -135,6 +135,13 @@
             return;
         }
 
+        // Check reCAPTCHA
+        var recaptchaResponse = grecaptcha.getResponse();
+        if (!recaptchaResponse) {
+            showMessage('Please complete the reCAPTCHA verification.', 'error');
+            return;
+        }
+
         // Check for suspicious content
         var allContent = name + ' ' + subject + ' ' + message;
         if (detectSuspiciousContent(allContent)) {
@@ -159,6 +166,7 @@
         formData.append('phone', phone);
         formData.append('subject', subject);
         formData.append('message', message);
+        formData.append('g-recaptcha-response', recaptchaResponse);
         formData.append('_subject', `Portfolio Contact: ${subject}`);
         formData.append('_replyto', email);
         formData.append('_format', 'plain');
@@ -178,6 +186,11 @@
         .done(function (response) {
             showMessage('🎉 Thank you! Your message has been sent successfully. I\'ll get back to you soon!', 'success');
             form[0].reset();
+            
+            // Reset reCAPTCHA
+            if (typeof grecaptcha !== 'undefined') {
+                grecaptcha.reset();
+            }
             
             // Update rate limiting
             submissionCount++;
