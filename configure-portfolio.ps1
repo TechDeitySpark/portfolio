@@ -17,11 +17,40 @@ switch ($choice) {
         $githubUsername = Read-Host "Enter your GitHub username"
         
         # Update the JavaScript file
-        (Get-Content "assets\js\github-portfolio.js") -replace "TechDeitySpark", $githubUsername | Set-Content "assets\js\github-portfolio.js"
+        if (Test-Path "assets\js\github-portfolio.js") {
+            $jsContent = Get-Content "assets\js\github-portfolio.js" -Raw
+            $jsContent = $jsContent -replace "TechDeitySpark", $githubUsername
+            $jsContent | Set-Content "assets\js\github-portfolio.js"
+            Write-Host "✅ Updated GitHub username to: $githubUsername" -ForegroundColor Green
+        }
         
-        # Update HTML to use GitHub integration
-        (Get-Content "index.html") -replace "<!-- <script src=`"assets/js/github-portfolio.js`"></script> -->", "<script src=`"assets/js/github-portfolio.js`"></script>" | Set-Content "index.html"
-        (Get-Content "index.html") -replace "<script src=`"assets/js/static-portfolio.js`"></script>", "<!-- <script src=`"assets/js/static-portfolio.js`"></script> -->" | Set-Content "index.html"
+        # Check current HTML content
+        $htmlContent = Get-Content "index.html" -Raw
+        $modified = $false
+        
+        # Enable GitHub portfolio script if not present
+        if (-not ($htmlContent -match 'src="assets/js/github-portfolio\.js"')) {
+            $htmlContent = $htmlContent -replace '(\s*<script src="assets/js/plugins/contact-recaptcha-v3\.js"><\/script>)', '$1`n    <script src="assets/js/github-portfolio.js"></script>'
+            $modified = $true
+            Write-Host "✅ Added GitHub portfolio script" -ForegroundColor Green
+        } elseif ($htmlContent -match '<!--\s*<script src="assets/js/github-portfolio\.js"><\/script>\s*-->') {
+            $htmlContent = $htmlContent -replace '<!--\s*<script src="assets/js/github-portfolio\.js"><\/script>\s*-->', '<script src="assets/js/github-portfolio.js"></script>'
+            $modified = $true
+            Write-Host "✅ Enabled GitHub portfolio script" -ForegroundColor Green
+        } else {
+            Write-Host "✅ GitHub portfolio script already enabled" -ForegroundColor Green
+        }
+        
+        # Disable static portfolio script if present
+        if ($htmlContent -match '<script src="assets/js/static-portfolio\.js"><\/script>') {
+            $htmlContent = $htmlContent -replace '<script src="assets/js/static-portfolio\.js"><\/script>', '<!-- <script src="assets/js/static-portfolio.js"></script> -->'
+            $modified = $true
+            Write-Host "✅ Disabled static portfolio script" -ForegroundColor Green
+        }
+        
+        if ($modified) {
+            $htmlContent | Set-Content "index.html"
+        }
         
         Write-Host "✅ GitHub API integration configured!" -ForegroundColor Green
         Write-Host "📝 Your projects will be automatically fetched from GitHub"
@@ -30,15 +59,42 @@ switch ($choice) {
     2 {
         Write-Host "Configuring Static Portfolio..." -ForegroundColor Yellow
         
-        # Update HTML to use static portfolio
-        (Get-Content "index.html") -replace "<!-- <script src=`"assets/js/static-portfolio.js`"></script> -->", "<script src=`"assets/js/static-portfolio.js`"></script>" | Set-Content "index.html"
-        (Get-Content "index.html") -replace "<script src=`"assets/js/github-portfolio.js`"></script>", "<!-- <script src=`"assets/js/github-portfolio.js`"></script> -->" | Set-Content "index.html"
+        $htmlContent = Get-Content "index.html" -Raw
+        $modified = $false
         
-        # Enable static portfolio in the JavaScript file
-        $content = Get-Content "assets\js\static-portfolio.js" -Raw
-        $content = $content -replace "/\*$", ""
-        $content = $content -replace "^\*/", ""
-        $content | Set-Content "assets\js\static-portfolio.js"
+        # Enable static portfolio script
+        if (-not ($htmlContent -match 'src="assets/js/static-portfolio\.js"')) {
+            $htmlContent = $htmlContent -replace '(\s*<script src="assets/js/github-portfolio\.js"><\/script>)', '$1`n    <script src="assets/js/static-portfolio.js"></script>'
+            $modified = $true
+            Write-Host "✅ Added static portfolio script" -ForegroundColor Green
+        } elseif ($htmlContent -match '<!--\s*<script src="assets/js/static-portfolio\.js"><\/script>\s*-->') {
+            $htmlContent = $htmlContent -replace '<!--\s*<script src="assets/js/static-portfolio\.js"><\/script>\s*-->', '<script src="assets/js/static-portfolio.js"></script>'
+            $modified = $true
+            Write-Host "✅ Enabled static portfolio script" -ForegroundColor Green
+        } else {
+            Write-Host "✅ Static portfolio script already enabled" -ForegroundColor Green
+        }
+        
+        # Disable GitHub portfolio script
+        if ($htmlContent -match '<script src="assets/js/github-portfolio\.js"><\/script>') {
+            $htmlContent = $htmlContent -replace '<script src="assets/js/github-portfolio\.js"><\/script>', '<!-- <script src="assets/js/github-portfolio.js"></script> -->'
+            $modified = $true
+            Write-Host "✅ Disabled GitHub portfolio script" -ForegroundColor Green
+        }
+        
+        if ($modified) {
+            $htmlContent | Set-Content "index.html"
+        }
+        
+        # Enable static portfolio initialization in JS file
+        if (Test-Path "assets\js\static-portfolio.js") {
+            $jsContent = Get-Content "assets\js\static-portfolio.js" -Raw
+            if ($jsContent -match '/\*[\s\S]*?document\.addEventListener[\s\S]*?\*/') {
+                $jsContent = $jsContent -replace '/\*([\s\S]*?document\.addEventListener[\s\S]*?)\*/', '$1'
+                $jsContent | Set-Content "assets\js\static-portfolio.js"
+                Write-Host "✅ Enabled static portfolio initialization" -ForegroundColor Green
+            }
+        }
         
         Write-Host "✅ Static portfolio configured!" -ForegroundColor Green
         Write-Host "📝 Edit assets/js/static-portfolio.js to customize your projects"
@@ -51,11 +107,41 @@ switch ($choice) {
         $githubUsername = Read-Host "Enter your GitHub username"
         
         # Update the JavaScript file
-        (Get-Content "assets\js\github-portfolio.js") -replace "TechDeitySpark", $githubUsername | Set-Content "assets\js\github-portfolio.js"
+        if (Test-Path "assets\js\github-portfolio.js") {
+            $jsContent = Get-Content "assets\js\github-portfolio.js" -Raw
+            $jsContent = $jsContent -replace "TechDeitySpark", $githubUsername
+            $jsContent | Set-Content "assets\js\github-portfolio.js"
+            Write-Host "✅ Updated GitHub username to: $githubUsername" -ForegroundColor Green
+        }
         
-        # Enable both scripts
-        (Get-Content "index.html") -replace "<!-- <script src=`"assets/js/github-portfolio.js`"></script> -->", "<script src=`"assets/js/github-portfolio.js`"></script>" | Set-Content "index.html"
-        (Get-Content "index.html") -replace "<!-- <script src=`"assets/js/static-portfolio.js`"></script> -->", "<script src=`"assets/js/static-portfolio.js`"></script>" | Set-Content "index.html"
+        $htmlContent = Get-Content "index.html" -Raw
+        $modified = $false
+        
+        # Enable GitHub portfolio script
+        if (-not ($htmlContent -match 'src="assets/js/github-portfolio\.js"')) {
+            $htmlContent = $htmlContent -replace '(\s*<script src="assets/js/plugins/contact-recaptcha-v3\.js"><\/script>)', '$1`n    <script src="assets/js/github-portfolio.js"></script>'
+            $modified = $true
+            Write-Host "✅ Added GitHub portfolio script" -ForegroundColor Green
+        } elseif ($htmlContent -match '<!--\s*<script src="assets/js/github-portfolio\.js"><\/script>\s*-->') {
+            $htmlContent = $htmlContent -replace '<!--\s*<script src="assets/js/github-portfolio\.js"><\/script>\s*-->', '<script src="assets/js/github-portfolio.js"></script>'
+            $modified = $true
+            Write-Host "✅ Enabled GitHub portfolio script" -ForegroundColor Green
+        }
+        
+        # Enable static portfolio script
+        if (-not ($htmlContent -match 'src="assets/js/static-portfolio\.js"')) {
+            $htmlContent = $htmlContent -replace '(\s*<script src="assets/js/github-portfolio\.js"><\/script>)', '$1`n    <script src="assets/js/static-portfolio.js"></script>'
+            $modified = $true
+            Write-Host "✅ Added static portfolio script" -ForegroundColor Green
+        } elseif ($htmlContent -match '<!--\s*<script src="assets/js/static-portfolio\.js"><\/script>\s*-->') {
+            $htmlContent = $htmlContent -replace '<!--\s*<script src="assets/js/static-portfolio\.js"><\/script>\s*-->', '<script src="assets/js/static-portfolio.js"></script>'
+            $modified = $true
+            Write-Host "✅ Enabled static portfolio script" -ForegroundColor Green
+        }
+        
+        if ($modified) {
+            $htmlContent | Set-Content "index.html"
+        }
         
         Write-Host "✅ Hybrid mode configured!" -ForegroundColor Green
         Write-Host "📝 Your GitHub projects will be fetched automatically"

@@ -1,4 +1,4 @@
-// GitHub Portfolio Integration
+﻿// GitHub Portfolio Integration
 // This script fetches GitHub repositories and displays them in the portfolio section
 
 class GitHubPortfolio {
@@ -235,3 +235,4 @@ document.addEventListener('DOMContentLoaded', function() {
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = GitHubPortfolio;
 }
+
