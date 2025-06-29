@@ -604,21 +604,9 @@
                                                 <div class="col-lg-6 col-md-6 col-sm-12">
                                                     <div class="certificate-card tmp-scroll-trigger tmponhover tmp-fade-in animation-order-7">
                                                         <div class="certificate-image">
-                                                            <!-- HackerRank Certificate - Using placeholder with link -->
-                                                            <div class="hackerrank-certificate-placeholder">
-                                                                <div class="hackerrank-logo">
-                                                                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTE2IDBDNS4wNzggMCAwIDUuMDc4IDAgMTZTNS4wNzggMzIgMTYgMzIgMzIgMjYuOTIyIDMyIDE2UzI2LjkyMiAwIDE2IDBaTTIyLjUgMjIuNUgxOC41VjE4LjVIOC41VjE0LjVIMTguNVYxMC41SDIyLjVWMjIuNVoiIGZpbGw9IiMwMEVBNjQiLz4KPC9zdmc+" alt="HackerRank" class="certificate-brand-logo">
-                                                                </div>
-                                                                <div class="certificate-title-overlay">
-                                                                    <h3>Problem Solving</h3>
-                                                                    <p>(Intermediate)</p>
-                                                                </div>
-                                                                <div class="certificate-badge">
-                                                                    <i class="fa-solid fa-award"></i>
-                                                                </div>
-                                                            </div>
+                                                            <img src="assets/images/certificates/hackerrank-certificate.svg" alt="HackerRank Problem Solving Certificate" class="certificate-img">
                                                             <div class="certificate-overlay">
-                                                                <a href="https://www.hackerrank.com/certificates/9e91e58625b8" class="certificate-view-btn" target="_blank" rel="noopener">
+                                                                <a href="#" class="certificate-view-btn" onclick="openCertificateModal('hackerrank')" data-certificate="hackerrank">
                                                                     <i class="fa-regular fa-eye"></i>View Certificate
                                                                 </a>
                                                             </div>
@@ -1383,6 +1371,87 @@
             }
 
         );
+    </script>
+
+    <!-- Certificate Modal -->
+    <div id="certificateModal" class="certificate-modal" style="display: none;">
+        <div class="certificate-modal-overlay" onclick="closeCertificateModal()"></div>
+        <div class="certificate-modal-content">
+            <div class="certificate-modal-header">
+                <h3 id="certificateModalTitle">Certificate</h3>
+                <button class="certificate-modal-close" onclick="closeCertificateModal()">
+                    <i class="fa-solid fa-times"></i>
+                </button>
+            </div>
+            <div class="certificate-modal-body">
+                <div id="certificateModalContent">
+                    <!-- Certificate content will be loaded here -->
+                </div>
+                <div class="certificate-modal-actions">
+                    <a id="certificateDirectLink" href="#" target="_blank" class="btn btn-primary">
+                        <i class="fa-solid fa-external-link"></i> View Original
+                    </a>
+                    <button onclick="closeCertificateModal()" class="btn btn-secondary">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Certificate Modal Functions
+        function openCertificateModal(certificateType) {
+            const modal = document.getElementById('certificateModal');
+            const modalTitle = document.getElementById('certificateModalTitle');
+            const modalContent = document.getElementById('certificateModalContent');
+            const directLink = document.getElementById('certificateDirectLink');
+            
+            switch(certificateType) {
+                case 'hackerrank':
+                    modalTitle.textContent = 'HackerRank - Problem Solving (Intermediate)';
+                    modalContent.innerHTML = `
+                        <div class="certificate-display">
+                            <img src="assets/images/certificates/hackerrank-certificate.svg" 
+                                 alt="HackerRank Problem Solving Certificate" 
+                                 class="certificate-full-image"
+                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                            <div class="certificate-iframe-fallback" style="display: none;">
+                                <iframe src="https://www.hackerrank.com/certificates/iframe/9e91e58625b8" 
+                                        width="100%" 
+                                        height="500" 
+                                        frameborder="0"
+                                        title="HackerRank Certificate">
+                                </iframe>
+                            </div>
+                            <div class="certificate-info">
+                                <p><strong>Note:</strong> This is a placeholder certificate. Replace the SVG file with your actual certificate image.</p>
+                                <p>Required files: <code>hackerrank-certificate.svg</code> (or .jpg/.png)</p>
+                            </div>
+                        </div>
+                    `;
+                    directLink.href = 'https://www.hackerrank.com/certificates/9e91e58625b8';
+                    break;
+                default:
+                    modalTitle.textContent = 'Certificate';
+                    modalContent.innerHTML = '<p>Certificate not found.</p>';
+                    directLink.href = '#';
+            }
+            
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeCertificateModal() {
+            const modal = document.getElementById('certificateModal');
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+        
+        // Close modal on Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeCertificateModal();
+            }
+        });
     </script>
 </body>
 
