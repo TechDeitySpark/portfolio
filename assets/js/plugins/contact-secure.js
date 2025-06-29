@@ -156,6 +156,13 @@
             return;
         }
 
+        // Check reCAPTCHA validation
+        var recaptchaResponse = grecaptcha.getResponse();
+        if (!recaptchaResponse) {
+            showMessage('Please complete the reCAPTCHA verification.', 'error');
+            return;
+        }
+
         // Disable submit button to prevent double submission
         submitBtn.prop('disabled', true).find('.btn-text').text('Sending...');
 
