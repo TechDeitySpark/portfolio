@@ -1,20 +1,20 @@
-# reCAPTCHA Production Setup Guide
+# reCAPTCHA v3 Production Setup Guide
 
 ## The Problem
-The reCAPTCHA "Invalid key type" error occurs because the site key in your code is either:
-1. A placeholder/test key (not real)
+The reCAPTCHA "Invalid key type" error occurs because:
+1. The site key is a placeholder (not real)
 2. Not registered for your domain (techdeityspark.github.io)
-3. Wrong key type (v2 vs v3 mismatch)
+3. Wrong reCAPTCHA version (you want v3, not v2)
 
-## Solution: Create Your Own reCAPTCHA Keys
+## Solution: Create Your Own reCAPTCHA v3 Keys
 
 ### Step 1: Go to Google reCAPTCHA Admin Console
 1. Visit: https://www.google.com/recaptcha/admin/create
 2. Sign in with your Google account
 
-### Step 2: Register Your Site
-1. **Label**: Enter a descriptive name (e.g., "Portfolio Contact Form")
-2. **reCAPTCHA type**: Select **reCAPTCHA v2** → **"I'm not a robot" Checkbox**
+### Step 2: Register Your Site for reCAPTCHA v3
+1. **Label**: Enter a descriptive name (e.g., "Portfolio Contact Form v3")
+2. **reCAPTCHA type**: Select **reCAPTCHA v3** (Important: NOT v2!)
 3. **Domains**: Add these domains (one per line):
    ```
    techdeityspark.github.io
@@ -28,57 +28,86 @@ The reCAPTCHA "Invalid key type" error occurs because the site key in your code 
 
 ### Step 3: Get Your Keys
 After registration, you'll get:
-- **Site Key** (public, goes in HTML)
+- **Site Key** (public, goes in HTML and JavaScript)
 - **Secret Key** (private, for server-side validation)
 
-### Step 4: Update Your HTML
-Replace the placeholder site key in `index.html` line 1062:
+### Step 4: Update Your Site Key
+Replace the placeholder in TWO places:
 
-**Current (placeholder):**
+**1. In index.html (line ~21):**
 ```html
-<div class="g-recaptcha" data-sitekey="6LcEn3ErAAAAAF7mOHQCmSVwDsEAuy8OiOSyyPYz"></div>
+<!-- CURRENT: -->
+<script src="https://www.google.com/recaptcha/api.js?render=YOUR_SITE_KEY_HERE"></script>
+
+<!-- REPLACE WITH: -->
+<script src="https://www.google.com/recaptcha/api.js?render=6LcYourActualV3SiteKeyHere"></script>
 ```
 
-**Replace with your real site key:**
-```html
-<div class="g-recaptcha" data-sitekey="YOUR_ACTUAL_SITE_KEY_HERE"></div>
+**2. In assets/js/plugins/contact-recaptcha-v3.js (line ~17):**
+```javascript
+// CURRENT:
+const RECAPTCHA_SITE_KEY = 'YOUR_SITE_KEY_HERE';
+
+// REPLACE WITH:
+const RECAPTCHA_SITE_KEY = '6LcYourActualV3SiteKeyHere';
 ```
 
-### Step 5: Update Formspree (Optional but Recommended)
+### Step 5: Understanding reCAPTCHA v3
+- **v3 is invisible** - no checkbox or widget for users
+- **Runs automatically** in the background when form is submitted
+- **Gives a score** (0.0 to 1.0) indicating likelihood of being human
+- **Better user experience** - no interruption for legitimate users
+
+### Step 6: Update Formspree (Optional but Recommended)
 1. Log into your Formspree account
 2. Go to your form settings
-3. Add your reCAPTCHA secret key to enable server-side validation
+3. Add your reCAPTCHA v3 secret key to enable server-side validation
 
-### Step 6: Test
+### Step 7: Test
 1. Save and commit changes
 2. Push to GitHub
 3. Test on your live site: https://techdeityspark.github.io/portfolio
-4. Verify the reCAPTCHA widget loads and form submissions work
+4. Check browser console for reCAPTCHA logs
+5. Verify form submissions work
 
-## Alternative: Disable reCAPTCHA Temporarily
+## reCAPTCHA v3 vs v2 Comparison
 
-If you want to launch immediately without reCAPTCHA, you can temporarily disable it:
-
-1. Comment out the reCAPTCHA widget in HTML
-2. Comment out reCAPTCHA validation in JavaScript
-3. The form will still have honeypot, rate limiting, and content filtering
-
-## Security Notes
-- **Never commit your secret key to GitHub** (it's for server-side only)
-- The site key is public and safe to include in your HTML
-- Consider enabling additional reCAPTCHA security features in the admin console
-- Monitor your reCAPTCHA analytics for abuse patterns
+| Feature | v2 | v3 |
+|---------|----|----|
+| User Experience | Shows checkbox/challenge | Invisible |
+| Integration | Simple widget | JavaScript API |
+| Scoring | Pass/Fail | Score 0.0-1.0 |
+| Bot Detection | Challenge-based | Behavior analysis |
+| Site Key Format | Starts with `6Lc` | Starts with `6Lc` |
 
 ## Troubleshooting
-- **"Invalid domain"**: Ensure your domain is registered correctly
-- **Widget not loading**: Check for typos in the site key
-- **Form still not working**: Verify Formspree endpoint is correct
-- **CORS errors**: Ensure proper headers are set
+
+### Common Issues:
+- **"Invalid key type"**: Using v2 key with v3 implementation (or vice versa)
+- **"Invalid domain"**: Domain not registered in reCAPTCHA admin
+- **Console errors**: Check site key is correctly set in both files
+- **No reCAPTCHA execution**: Check browser dev tools for JavaScript errors
+
+### Quick Test:
+Open browser console on your live site and check for:
+```
+🔒 reCAPTCHA v3 initialized for enhanced security
+```
+
+If you see warnings about site key, update the placeholder values.
 
 ## Production Checklist
-- [ ] Created real reCAPTCHA keys for techdeityspark.github.io
-- [ ] Updated site key in index.html
+- [ ] Created reCAPTCHA v3 keys (not v2!) for techdeityspark.github.io
+- [ ] Updated site key in HTML script tag
+- [ ] Updated site key in JavaScript file
 - [ ] Added secret key to Formspree (optional)
 - [ ] Tested on live GitHub Pages site
 - [ ] Verified form submissions work end-to-end
-- [ ] Checked reCAPTCHA analytics for proper tracking
+- [ ] Checked browser console for successful reCAPTCHA execution
+- [ ] No "Invalid key type" errors
+
+## Security Notes
+- **Never commit your secret key to GitHub** (it's for server-side validation only)
+- The site key is public and safe to include in your code
+- reCAPTCHA v3 provides better bot detection through behavioral analysis
+- Monitor your reCAPTCHA admin console for abuse patterns and scores

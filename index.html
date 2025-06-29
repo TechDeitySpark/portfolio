@@ -17,8 +17,8 @@
     <!-- custom css -->
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/contact-secure.css">
-    <!-- reCAPTCHA - Temporarily disabled until production keys are set up -->
-    <!-- <script src="https://www.google.com/recaptcha/api.js" async defer></script> -->
+    <!-- reCAPTCHA v3 - Replace YOUR_SITE_KEY_HERE with your actual v3 site key -->
+    <script src="https://www.google.com/recaptcha/api.js?render=YOUR_SITE_KEY_HERE"></script>
 </head>
 
 <body class="spybody index-ten primary-yellow" data-spy="scroll" data-bs-target=".navbar-example2" data-offset="70">
@@ -1057,11 +1057,8 @@
                                                                     </div>
                                                                 </div>
                                                                 
-                                                                <!-- reCAPTCHA - Temporarily hidden until production keys are set up -->
-                                                                <!-- <div class="col-lg-12 mb-3">
-                                                                    <div class="g-recaptcha" data-sitekey="YOUR_ACTUAL_SITE_KEY_HERE"></div>
-                                                                    <small class="text-muted">🔒 Please complete the security check above</small>
-                                                                </div> -->
+                                                                <!-- reCAPTCHA v3 is invisible - no widget needed -->
+                                                                <!-- The reCAPTCHA v3 verification happens automatically in JavaScript -->
                                                                 
                                                                 <div class="col-lg-12">
                                                                     <button type="submit" class="tmp-btn hover-icon-reverse radius-round w-100" id="submit-btn">
@@ -1243,7 +1240,7 @@
     <script src="assets/js/vendor/waw.js"></script>
     <script src="assets/js/plugins/isotop.js"></script>
     <script src="assets/js/plugins/animation.js"></script>
-    <script src="assets/js/plugins/contact-temp-no-recaptcha.js"></script>
+    <script src="assets/js/plugins/contact-recaptcha-v3.js"></script>
     <script src="assets/js/vendor/backtop.js"></script>
     <script src="assets/js/vendor/particle.js"></script>
     <script src="assets/js/plugins/text-type.js"></script>
