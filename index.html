@@ -604,7 +604,7 @@
                                                 <div class="col-lg-6 col-md-6 col-sm-12">
                                                     <div class="certificate-card tmp-scroll-trigger tmponhover tmp-fade-in animation-order-7">
                                                         <div class="certificate-image">
-                                                            <img src="assets/images/certificates/hackerrank-certificate.svg" alt="HackerRank Problem Solving Certificate" class="certificate-img">
+                                                            <img src="assets/certificates/hackerrank-certificate.svg" alt="HackerRank Problem Solving Certificate" class="certificate-img">
                                                             <div class="certificate-overlay">
                                                                 <a href="#" class="certificate-view-btn" onclick="openCertificateModal('hackerrank')" data-certificate="hackerrank">
                                                                     <i class="fa-regular fa-eye"></i>View Certificate
@@ -1410,10 +1410,34 @@
                     modalTitle.textContent = 'HackerRank - Problem Solving (Intermediate)';
                     modalContent.innerHTML = `
                         <div class="certificate-display">
-                            <img src="assets/images/certificates/hackerrank-certificate.svg" 
+                            <!-- Try to load image first -->
+                            <img src="assets/certificates/hackerrank-certificate.svg" 
                                  alt="HackerRank Problem Solving Certificate" 
                                  class="certificate-full-image"
                                  onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                            
+                            <!-- Fallback to PDF if image not found -->
+                            <div class="certificate-pdf-viewer" style="display: none;">
+                                <embed src="assets/certificates/rest_api_intermediate certificate.pdf" 
+                                       type="application/pdf" 
+                                       width="100%" 
+                                       height="600px"
+                                       class="certificate-pdf-embed"
+                                       title="HackerRank Certificate PDF">
+                                <div class="pdf-fallback" style="text-align: center; padding: 20px;">
+                                    <p><i class="fa-solid fa-file-pdf" style="font-size: 48px; color: #e74c3c; margin-bottom: 15px;"></i></p>
+                                    <p><strong>PDF Certificate Available</strong></p>
+                                    <p>REST API Intermediate Certificate (Demo)</p>
+                                    <a href="assets/certificates/rest_api_intermediate certificate.pdf" 
+                                       target="_blank" 
+                                       class="btn btn-primary" 
+                                       style="margin-top: 10px;">
+                                        <i class="fa-solid fa-download"></i> Download PDF
+                                    </a>
+                                </div>
+                            </div>
+                            
+                            <!-- Final fallback to iframe -->
                             <div class="certificate-iframe-fallback" style="display: none;">
                                 <iframe src="https://www.hackerrank.com/certificates/iframe/9e91e58625b8" 
                                         width="100%" 
@@ -1422,9 +1446,19 @@
                                         title="HackerRank Certificate">
                                 </iframe>
                             </div>
-                            <div class="certificate-info">
-                                <p><strong>Note:</strong> This is a placeholder certificate. Replace the SVG file with your actual certificate image.</p>
-                                <p>Required files: <code>hackerrank-certificate.svg</code> (or .jpg/.png)</p>
+                            
+                            <div class="certificate-options" style="margin-top: 20px; text-align: center;">
+                                <div class="certificate-format-options">
+                                    <button onclick="showCertificateFormat('image', 'hackerrank')" class="format-btn active" id="btn-image">
+                                        <i class="fa-solid fa-image"></i> Image
+                                    </button>
+                                    <button onclick="showCertificateFormat('pdf', 'hackerrank')" class="format-btn" id="btn-pdf">
+                                        <i class="fa-solid fa-file-pdf"></i> PDF
+                                    </button>
+                                    <button onclick="showCertificateFormat('online', 'hackerrank')" class="format-btn" id="btn-online">
+                                        <i class="fa-solid fa-globe"></i> Online
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     `;
@@ -1438,6 +1472,36 @@
             
             modal.style.display = 'flex';
             document.body.style.overflow = 'hidden';
+        }
+        
+        function showCertificateFormat(format, certificateType) {
+            const imageDiv = document.querySelector('.certificate-full-image').parentElement;
+            const pdfDiv = document.querySelector('.certificate-pdf-viewer');
+            const iframeDiv = document.querySelector('.certificate-iframe-fallback');
+            
+            // Remove active class from all buttons
+            document.querySelectorAll('.format-btn').forEach(btn => btn.classList.remove('active'));
+            
+            // Hide all formats
+            if (imageDiv) imageDiv.style.display = 'none';
+            if (pdfDiv) pdfDiv.style.display = 'none';
+            if (iframeDiv) iframeDiv.style.display = 'none';
+            
+            // Show selected format
+            switch(format) {
+                case 'image':
+                    if (imageDiv) imageDiv.style.display = 'block';
+                    document.getElementById('btn-image').classList.add('active');
+                    break;
+                case 'pdf':
+                    if (pdfDiv) pdfDiv.style.display = 'block';
+                    document.getElementById('btn-pdf').classList.add('active');
+                    break;
+                case 'online':
+                    if (iframeDiv) iframeDiv.style.display = 'block';
+                    document.getElementById('btn-online').classList.add('active');
+                    break;
+            }
         }
         
         function closeCertificateModal() {
