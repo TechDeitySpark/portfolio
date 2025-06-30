@@ -76,7 +76,7 @@ class StaticPortfolio {
         
         return `
             <div class="col-lg-3 col-md-6 col-sm-12">
-                <div class="tmp-portfolio tmp-scroll-trigger tmp-fade-in animation-order-${index + 1} ${featured ? 'featured-project' : ''}" data-project="${name.toLowerCase().replace(/\s+/g, '-')}" data-category="${category.toLowerCase()}">>
+                <div class="tmp-portfolio tmp-scroll-trigger tmp-fade-in animation-order-${index + 1} ${featured ? 'featured-project' : ''}" data-project="${name.toLowerCase().replace(/\s+/g, '-')}">>>
                     <div class="github-project-image">
                         <img src="${image}" alt="${name}" onerror="this.src='assets/images/latest-portfolio/github-placeholder.svg'">
                         <div class="project-overlay">
@@ -87,7 +87,6 @@ class StaticPortfolio {
                     </div>
                     <div class="portfolio-card-content-wrap">
                         <div class="content-left">
-                            <p class="portfoli-card-para" data-category="${category}">${category}</p>
                             <h3 class="portfolio-card-title animated fadeIn">
                                 <a href="${demoUrl}" target="_blank" rel="noopener noreferrer">
                                     ${name}

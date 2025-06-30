@@ -34,15 +34,10 @@ class GitHubPortfolio {
         const technologies = this.extractTechnologies(repo);
         const demoUrl = repo.homepage || repo.html_url;
         const repoUrl = repo.html_url;
-        
-        // Use repository topics as categories, fallback to language
-        const category = repo.topics && repo.topics.length > 0 
-            ? repo.topics[0].charAt(0).toUpperCase() + repo.topics[0].slice(1)
-            : repo.language || 'Development';
 
         return `
             <div class="col-lg-3 col-md-6 col-sm-12">
-                <div class="tmp-portfolio tmp-scroll-trigger tmp-fade-in animation-order-${index + 1}" data-repo-id="${repo.id}" data-category="${category.toLowerCase()}">
+                <div class="tmp-portfolio tmp-scroll-trigger tmp-fade-in animation-order-${index + 1}" data-repo-id="${repo.id}">
                     <div class="github-project-image">
                         <img src="${this.getProjectImage(repo)}" alt="${repo.name}" onerror="this.src='assets/images/latest-portfolio/github-placeholder.svg'">
                         <div class="project-overlay">
@@ -53,7 +48,6 @@ class GitHubPortfolio {
                     </div>
                     <div class="portfolio-card-content-wrap">
                         <div class="content-left">
-                            <p class="portfoli-card-para">${category}</p>
                             <h3 class="portfolio-card-title animated fadeIn">
                                 <a href="${demoUrl}" target="_blank" rel="noopener noreferrer">
                                     ${this.formatProjectName(repo.name)}
@@ -135,7 +129,7 @@ class GitHubPortfolio {
         return possibleImages[0];
     }
 
-    async renderProjects(filterCategory = 'all') {
+    async renderProjects() {
         if (!this.container) {
             console.error('Portfolio container not found');
             return;
@@ -149,18 +143,7 @@ class GitHubPortfolio {
                 return;
             }
 
-            // Filter projects by category if specified
-            let filteredRepos = repos;
-            if (filterCategory !== 'all') {
-                filteredRepos = repos.filter(repo => {
-                    const category = repo.topics && repo.topics.length > 0 
-                        ? repo.topics[0].toLowerCase()
-                        : (repo.language || 'development').toLowerCase();
-                    return category === filterCategory.toLowerCase();
-                });
-            }
-
-            const projectsHTML = filteredRepos.map((repo, index) => this.generateProjectHTML(repo, index)).join('');
+            const projectsHTML = repos.map((repo, index) => this.generateProjectHTML(repo, index)).join('');
             
             // Find the portfolio row and replace its content
             const portfolioRow = this.container.querySelector('.row');
@@ -172,57 +155,10 @@ class GitHubPortfolio {
                     tmpScrollTrigger.refresh();
                 }
             }
-
-            // Update category filter buttons
-            this.updateCategoryButtons(filterCategory);
         } catch (error) {
             console.error('Error rendering GitHub projects:', error);
             this.renderFallback();
         }
-    }
-
-    // Get all unique categories from projects
-    getCategories() {
-        const categories = new Set(['all']);
-        this.projects.forEach(repo => {
-            const category = repo.topics && repo.topics.length > 0 
-                ? repo.topics[0].toLowerCase()
-                : (repo.language || 'development').toLowerCase();
-            categories.add(category);
-        });
-        return Array.from(categories);
-    }
-
-    // Create category filter buttons
-    createCategoryFilter() {
-        const categories = this.getCategories();
-        const filterHTML = `
-            <div class="portfolio-filter-wrapper mb--50">
-                <div class="portfolio-filter text-center">
-                    ${categories.map(category => `
-                        <button class="filter-btn ${category === 'all' ? 'active' : ''}" 
-                                data-filter="${category}"
-                                onclick="portfolioInstance.renderProjects('${category}')">
-                            ${category.charAt(0).toUpperCase() + category.slice(1)}
-                        </button>
-                    `).join('')}
-                </div>
-            </div>
-        `;
-        
-        // Insert filter buttons before the portfolio row
-        const portfolioRow = this.container.querySelector('.row');
-        if (portfolioRow) {
-            portfolioRow.insertAdjacentHTML('beforebegin', filterHTML);
-        }
-    }
-
-    // Update active filter button
-    updateCategoryButtons(activeCategory) {
-        const filterButtons = this.container.querySelectorAll('.filter-btn');
-        filterButtons.forEach(btn => {
-            btn.classList.toggle('active', btn.dataset.filter === activeCategory);
-        });
     }
 
     renderFallback() {
@@ -238,7 +174,6 @@ class GitHubPortfolio {
                     <img src="${project.image}" alt="${project.name}">
                     <div class="portfolio-card-content-wrap">
                         <div class="content-left">
-                            <p class="portfoli-card-para">${project.category}</p>
                             <h3 class="portfolio-card-title animated fadeIn">
                                 <a href="${project.url}" target="_blank" rel="noopener noreferrer">
                                     ${project.name}
@@ -271,20 +206,15 @@ class GitHubPortfolio {
 }
 
 // Initialize when DOM is loaded
-let portfolioInstance; // Global instance for category filtering
-
 document.addEventListener('DOMContentLoaded', function() {
     // Replace 'TechDeitySpark' with your GitHub username
-    portfolioInstance = new GitHubPortfolio('TechDeitySpark', 'portfolio');
+    const githubPortfolio = new GitHubPortfolio('TechDeitySpark', 'portfolio');
     
-    // Load GitHub projects and create category filter
-    portfolioInstance.fetchRepositories().then(() => {
-        portfolioInstance.createCategoryFilter();
-        portfolioInstance.renderProjects();
-    });
+    // Load GitHub projects
+    githubPortfolio.renderProjects();
     
     // Example of adding a featured project that's not on GitHub
-    // portfolioInstance.addFeaturedProject({
+    // githubPortfolio.addFeaturedProject({
     //     name: 'Enterprise System',
     //     description: 'Large-scale enterprise solution built for a major client.',
     //     category: 'Enterprise',
