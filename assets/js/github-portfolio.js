@@ -130,30 +130,41 @@ class GitHubPortfolio {
     }
 
     async renderProjects() {
+        console.log('GitHub Portfolio: renderProjects called');
+        
         if (!this.container) {
             console.error('Portfolio container not found');
             return;
         }
+        
+        console.log('GitHub Portfolio: Container found, fetching repositories...');
 
         try {
             const repos = await this.fetchRepositories();
+            console.log('GitHub Portfolio: Fetched', repos.length, 'repositories');
             
             if (repos.length === 0) {
+                console.log('GitHub Portfolio: No repos found, using fallback');
                 this.renderFallback();
                 return;
             }
 
             const projectsHTML = repos.map((repo, index) => this.generateProjectHTML(repo, index)).join('');
+            console.log('GitHub Portfolio: Generated HTML for', repos.length, 'projects');
             
             // Find the portfolio row and replace its content
             const portfolioRow = this.container.querySelector('.row');
             if (portfolioRow) {
+                console.log('GitHub Portfolio: Replacing portfolio content...');
                 portfolioRow.innerHTML = projectsHTML;
                 
                 // Trigger scroll animations for new content
                 if (typeof tmpScrollTrigger !== 'undefined') {
                     tmpScrollTrigger.refresh();
                 }
+                console.log('GitHub Portfolio: Content replaced successfully');
+            } else {
+                console.error('GitHub Portfolio: .row element not found in container');
             }
         } catch (error) {
             console.error('Error rendering GitHub projects:', error);
@@ -207,10 +218,13 @@ class GitHubPortfolio {
 
 // Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('GitHub Portfolio: DOM loaded, initializing...');
+    
     // Replace 'TechDeitySpark' with your GitHub username
     const githubPortfolio = new GitHubPortfolio('TechDeitySpark', 'portfolio');
     
     // Load GitHub projects
+    console.log('GitHub Portfolio: Starting to render projects...');
     githubPortfolio.renderProjects();
     
     // Example of adding a featured project that's not on GitHub
