@@ -75,8 +75,8 @@ class StaticPortfolio {
         const { name, description, category, image, demoUrl, repoUrl, technologies, stats, featured } = project;
         
         return `
-            <div class="col-lg-6 col-md-6 col-sm-12">
-                <div class="tmp-portfolio tmp-scroll-trigger tmp-fade-in animation-order-${index + 1} ${featured ? 'featured-project' : ''}" data-project="${name.toLowerCase().replace(/\s+/g, '-')}">
+            <div class="col-lg-3 col-md-6 col-sm-12">
+                <div class="tmp-portfolio tmp-scroll-trigger tmp-fade-in animation-order-${index + 1} ${featured ? 'featured-project' : ''}" data-project="${name.toLowerCase().replace(/\s+/g, '-')}" data-category="${category.toLowerCase()}">>
                     <div class="github-project-image">
                         <img src="${image}" alt="${name}" onerror="this.src='assets/images/latest-portfolio/github-placeholder.svg'">
                         <div class="project-overlay">

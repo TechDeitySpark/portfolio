@@ -131,6 +131,50 @@
     z-index: 10;
 }
 
+/* Portfolio Category Filter */
+.portfolio-filter-wrapper {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.portfolio-filter {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+    background: #f8f9fa;
+    padding: 15px 25px;
+    border-radius: 50px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.filter-btn {
+    background: transparent;
+    border: 2px solid #e9ecef;
+    color: #6c757d;
+    padding: 8px 20px;
+    border-radius: 25px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: capitalize;
+}
+
+.filter-btn:hover {
+    background: #007bff;
+    border-color: #007bff;
+    color: white;
+    transform: translateY(-2px);
+}
+
+.filter-btn.active {
+    background: #007bff;
+    border-color: #007bff;
+    color: white;
+    box-shadow: 0 4px 15px rgba(0,123,255,0.3);
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .github-project-image img {
@@ -157,6 +201,55 @@
     .project-stats {
         justify-content: flex-start;
         gap: 10px;
+    }
+    
+    .portfolio-filter {
+        flex-direction: column;
+        gap: 8px;
+        padding: 15px;
+    }
+    
+    .filter-btn {
+        width: 100%;
+        padding: 10px;
+    }
+}
+
+/* 4-Column Layout Adjustments */
+@media (max-width: 1200px) {
+    .portfolio-filter {
+        padding: 12px 20px;
+        gap: 10px;
+    }
+    
+    .filter-btn {
+        padding: 6px 15px;
+        font-size: 0.85rem;
+    }
+}
+
+@media (min-width: 992px) {
+    .github-portfolio-container .tmp-portfolio {
+        margin-bottom: 30px;
+    }
+    
+    .github-project-image img {
+        height: 200px;
+    }
+    
+    .portfolio-card-content-wrap {
+        padding: 15px;
+    }
+    
+    .portfolio-card-title {
+        font-size: 1.1rem;
+        line-height: 1.3;
+    }
+    
+    .project-description {
+        font-size: 0.85rem;
+        -webkit-line-clamp: 3;
+        line-clamp: 3;
     }
 }
 
@@ -276,3 +369,29 @@
 .github-portfolio-container .portfolio-card-content-wrap {
     padding: 20px;
 }
+
+/* Category badges */
+.portfoli-card-para {
+    font-size: 0.8rem;
+    padding: 4px 12px;
+    background: #e9ecef;
+    border-radius: 15px;
+    display: inline-block;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+/* Category-specific colors */
+.portfoli-card-para[data-category="javascript"] { background: #f7df1e; color: #000; }
+.portfoli-card-para[data-category="typescript"] { background: #3178c6; color: #fff; }
+.portfoli-card-para[data-category="python"] { background: #3776ab; color: #fff; }
+.portfoli-card-para[data-category="java"] { background: #ed8b00; color: #fff; }
+.portfoli-card-para[data-category="react"] { background: #61dafb; color: #000; }
+.portfoli-card-para[data-category="vue"] { background: #4fc08d; color: #fff; }
+.portfoli-card-para[data-category="angular"] { background: #dd0031; color: #fff; }
+.portfoli-card-para[data-category="nodejs"] { background: #339933; color: #fff; }
+.portfoli-card-para[data-category="php"] { background: #777bb4; color: #fff; }
+.portfoli-card-para[data-category="go"] { background: #00add8; color: #fff; }
+.portfoli-card-para[data-category="rust"] { background: #000; color: #fff; }
+.portfoli-card-para[data-category="cpp"] { background: #00599c; color: #fff; }
+.portfoli-card-para[data-category="csharp"] { background: #239120; color: #fff; }

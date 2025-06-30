@@ -21,7 +21,7 @@ class GitHubPortfolio {
             this.projects = repos
                 .filter(repo => !repo.fork && !repo.archived)
                 .sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at))
-                .slice(0, 6); // Limit to 6 projects to match current layout
+                .slice(0, 12); // Limit to 12 projects for 4-column layout
             
             return this.projects;
         } catch (error) {
@@ -41,8 +41,8 @@ class GitHubPortfolio {
             : repo.language || 'Development';
 
         return `
-            <div class="col-lg-6 col-md-6 col-sm-12">
-                <div class="tmp-portfolio tmp-scroll-trigger tmp-fade-in animation-order-${index + 1}" data-repo-id="${repo.id}">
+            <div class="col-lg-3 col-md-6 col-sm-12">
+                <div class="tmp-portfolio tmp-scroll-trigger tmp-fade-in animation-order-${index + 1}" data-repo-id="${repo.id}" data-category="${category.toLowerCase()}">
                     <div class="github-project-image">
                         <img src="${this.getProjectImage(repo)}" alt="${repo.name}" onerror="this.src='assets/images/latest-portfolio/github-placeholder.svg'">
                         <div class="project-overlay">
@@ -135,7 +135,7 @@ class GitHubPortfolio {
         return possibleImages[0];
     }
 
-    async renderProjects() {
+    async renderProjects(filterCategory = 'all') {
         if (!this.container) {
             console.error('Portfolio container not found');
             return;
@@ -149,7 +149,18 @@ class GitHubPortfolio {
                 return;
             }
 
-            const projectsHTML = repos.map((repo, index) => this.generateProjectHTML(repo, index)).join('');
+            // Filter projects by category if specified
+            let filteredRepos = repos;
+            if (filterCategory !== 'all') {
+                filteredRepos = repos.filter(repo => {
+                    const category = repo.topics && repo.topics.length > 0 
+                        ? repo.topics[0].toLowerCase()
+                        : (repo.language || 'development').toLowerCase();
+                    return category === filterCategory.toLowerCase();
+                });
+            }
+
+            const projectsHTML = filteredRepos.map((repo, index) => this.generateProjectHTML(repo, index)).join('');
             
             // Find the portfolio row and replace its content
             const portfolioRow = this.container.querySelector('.row');
@@ -161,10 +172,57 @@ class GitHubPortfolio {
                     tmpScrollTrigger.refresh();
                 }
             }
+
+            // Update category filter buttons
+            this.updateCategoryButtons(filterCategory);
         } catch (error) {
             console.error('Error rendering GitHub projects:', error);
             this.renderFallback();
         }
+    }
+
+    // Get all unique categories from projects
+    getCategories() {
+        const categories = new Set(['all']);
+        this.projects.forEach(repo => {
+            const category = repo.topics && repo.topics.length > 0 
+                ? repo.topics[0].toLowerCase()
+                : (repo.language || 'development').toLowerCase();
+            categories.add(category);
+        });
+        return Array.from(categories);
+    }
+
+    // Create category filter buttons
+    createCategoryFilter() {
+        const categories = this.getCategories();
+        const filterHTML = `
+            <div class="portfolio-filter-wrapper mb--50">
+                <div class="portfolio-filter text-center">
+                    ${categories.map(category => `
+                        <button class="filter-btn ${category === 'all' ? 'active' : ''}" 
+                                data-filter="${category}"
+                                onclick="portfolioInstance.renderProjects('${category}')">
+                            ${category.charAt(0).toUpperCase() + category.slice(1)}
+                        </button>
+                    `).join('')}
+                </div>
+            </div>
+        `;
+        
+        // Insert filter buttons before the portfolio row
+        const portfolioRow = this.container.querySelector('.row');
+        if (portfolioRow) {
+            portfolioRow.insertAdjacentHTML('beforebegin', filterHTML);
+        }
+    }
+
+    // Update active filter button
+    updateCategoryButtons(activeCategory) {
+        const filterButtons = this.container.querySelectorAll('.filter-btn');
+        filterButtons.forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.filter === activeCategory);
+        });
     }
 
     renderFallback() {
@@ -175,7 +233,7 @@ class GitHubPortfolio {
     // Method to manually add featured projects that aren't on GitHub
     addFeaturedProject(project) {
         const featuredHTML = `
-            <div class="col-lg-6 col-md-6 col-sm-12">
+            <div class="col-lg-3 col-md-6 col-sm-12">
                 <div class="tmp-portfolio tmp-scroll-trigger tmp-fade-in animation-order-1 featured-project">
                     <img src="${project.image}" alt="${project.name}">
                     <div class="portfolio-card-content-wrap">
@@ -213,15 +271,20 @@ class GitHubPortfolio {
 }
 
 // Initialize when DOM is loaded
+let portfolioInstance; // Global instance for category filtering
+
 document.addEventListener('DOMContentLoaded', function() {
     // Replace 'TechDeitySpark' with your GitHub username
-    const githubPortfolio = new GitHubPortfolio('TechDeitySpark', 'portfolio');
+    portfolioInstance = new GitHubPortfolio('TechDeitySpark', 'portfolio');
     
-    // Load GitHub projects
-    githubPortfolio.renderProjects();
+    // Load GitHub projects and create category filter
+    portfolioInstance.fetchRepositories().then(() => {
+        portfolioInstance.createCategoryFilter();
+        portfolioInstance.renderProjects();
+    });
     
     // Example of adding a featured project that's not on GitHub
-    // githubPortfolio.addFeaturedProject({
+    // portfolioInstance.addFeaturedProject({
     //     name: 'Enterprise System',
     //     description: 'Large-scale enterprise solution built for a major client.',
     //     category: 'Enterprise',
